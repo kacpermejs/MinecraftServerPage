@@ -1,0 +1,99 @@
+# Ignore build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]ppPackages/
+[Tt]est[Rr]esult*/  
+[Tt]est[Rr]esult*/
+
+# Ignore the user-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+.project/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore the folder where all environments will be deployed to (we assume that the envs have been pre-built)
+build/
+
+# Ignore the local NuGet packages folder
+.nuget/
+
+# Ignore application insights folders
+ApplicationInsights.config
+
+# Ignore .NET Core build results
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore the Visual Studio 2019+ directory for local history (LocalHistory)
+.vscode/
+.vs/
+.vscode/
+.idea/
+
+# Rider settings
+.idea/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Office Temp Files
+~$*
+*.~??~
+*.~??
+~$*
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Access database files
+*.accdb
+*.mdb
+
+# Windows Thumbnail Cache files
+Thumbs.db
+
+# Windows Explorer
+*.DS_Store
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+**/obj

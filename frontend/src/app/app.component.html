@@ -1,0 +1,27 @@
+<header>
+  <div class="brand">
+    <img src="assets/images/elmshire_title2.png" alt="TitleImage">
+  </div>
+  
+  <nav [ngClass]="{'open': menuOpen}">
+    <a routerLink="/home"    routerLinkActive="active" >Home</a>
+    <a routerLink="/gallery" routerLinkActive="active" >Gallery</a>
+    <a routerLink="/map"     routerLinkActive="active" >Map</a>
+    <a routerLink="/events"  routerLinkActive="active" >Events</a>
+    <a routerLink="/rules"   routerLinkActive="active" >Rules</a>
+
+    <div class="align-right">
+      <button>
+        Login
+      </button>
+    </div>
+  </nav>
+
+  <button class="hamburger" (click)="toggleMenu()">
+    |||
+  </button>
+</header>
+
+<div class="main-content">
+  <router-outlet/>
+</div>
