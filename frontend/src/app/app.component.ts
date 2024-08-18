@@ -29,8 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.menuOpen = false; // Close the menu after navigation
       }
     });
-
-    console.log(this.configService.readConfig().API_URL);
+    this.configService.setConfig().then(console.log);
     this.healthCheck.getData().subscribe(console.log);
   }
 

@@ -1,5 +1,7 @@
 services:
   frontend:
+    environment:
+      - ENVIRONMENT=Production
     container_name: frontend
     image: ${DOCKER_REGISTRY-}frontend
     build:
