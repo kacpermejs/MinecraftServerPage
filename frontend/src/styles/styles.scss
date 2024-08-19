@@ -37,10 +37,6 @@ button {
     padding: 8px;
     padding-left: 16px;
     padding-right: 16px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    margin-left: 8px;
-    margin-right: 8px;
 
     border-color: theme.$text-light-color;
     border-style: none;
@@ -68,4 +64,14 @@ img {
     background-repeat: no-repeat;
     background-size: cover;
     shape-margin: 1rem;
+}
+
+section {
+    padding-left: 5em;
+    padding-right: 5em;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    max-width: 1200px;
 }
