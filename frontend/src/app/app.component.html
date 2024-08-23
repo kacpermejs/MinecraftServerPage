@@ -11,8 +11,11 @@
     <a routerLink="/rules"   routerLinkActive="active" >Rules</a>
 
     <div class="align-right">
-      <button>
-        Login
+      <button routerLink="/login" [ngClass]="{ 'hidden': (isLoggedIn$ | async)}">
+        Sign in
+      </button>
+      <button (click)="onLogout()" [ngClass]="{ 'hidden': !(isLoggedIn$ | async)}">
+        Sign out
       </button>
     </div>
   </nav>

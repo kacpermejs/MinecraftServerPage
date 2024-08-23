@@ -1,77 +1,125 @@
 @use 'colors' as theme;
 
 @font-face {
-    font-family: 'FFF Forward';
-    src: url('/assets/fonts/FFFFORWA.TTF') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'FFF Forward';
+  src: url('/assets/fonts/FFFFORWA.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Pixel Georgia';
-    src: url('/assets/fonts/Pixel Georgia.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Pixel Georgia';
+  src: url('/assets/fonts/Pixel Georgia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
+
 @font-face {
-    font-family: 'Pixel Georgia Bold';
-    src: url('/assets/fonts/Pixel Georgia Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
+  font-family: 'Pixel Georgia Bold';
+  src: url('/assets/fonts/Pixel Georgia Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 body {
-    font-family: "FFF Forward", monospace;
-    background-color: theme.$background-color;
-    color: theme.$text-light-color;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    margin: 0;
+  font-family: "FFF Forward", monospace;
+  background-color: theme.$background-color;
+  color: theme.$text-light-color;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin: 0;
 }
 
 button {
-    font-size: 12px;
-    font-family: "FFF Forward", monospace;
+  font-size: 12px;
+  font-family: "FFF Forward", monospace;
 
-    background-color: theme.$primary-color;
-    padding: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
+  background-color: theme.$primary-color;
+  padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 
-    border-color: theme.$text-light-color;
-    border-style: none;
-    border-width: 1px;
+  border-color: theme.$text-light-color;
+  border-style: none;
+  border-width: 1px;
 
-    box-shadow: 2px 2px 0px 0px theme.$text-dark-color;
+  box-shadow: 2px 2px 0px 0px theme.$text-dark-color;
 
-    &:active {
-        margin-top: 4px;
-        margin-bottom: 0px;
-    }
+  &:active {
+    transform: translate(0, 2px);
+  }
 
-    &:hover {
-        background-color: lighten(theme.$primary-color, 10%);
-        color: theme.$text-light-color;
-        box-shadow: 2px 2px 0px 0px theme.$text-light-color;
-    }
+  &:hover {
+    background-color: lighten(theme.$primary-color, 10%);
+    color: theme.$text-light-color;
+    box-shadow: 2px 2px 0px 0px theme.$text-light-color;
+  }
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    vertical-align: middle;
-    font-style: italic;
-    background-repeat: no-repeat;
-    background-size: cover;
-    shape-margin: 1rem;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  font-style: italic;
+  background-repeat: no-repeat;
+  background-size: cover;
+  shape-margin: 1rem;
 }
 
 section {
-    padding-left: 5em;
-    padding-right: 5em;
+  padding-left: 5em;
+  padding-right: 5em;
 
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 
-    max-width: 1200px;
+  max-width: 1200px;
+}
+
+form {
+  margin-left: auto;
+  margin-right: auto;
+
+  width: 340px;
+  padding: 1em;
+
+  header {}
+
+  main {
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5em;
+
+      label {
+        margin-right: 1em;
+        flex-basis: 150px;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-grow: 4;
+      }
+
+      input {
+        flex-grow: 1;
+        max-width: 150px;
+      }
+    }
+
+  }
+
+  footer {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+  }
+}
+
+a {
+  color: theme.$text-light-color;;
+}
+
+.hidden {
+  display: none;
 }

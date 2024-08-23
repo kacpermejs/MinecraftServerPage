@@ -1,0 +1,49 @@
+<section>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <header>
+      <h2>Register</h2>
+    </header>
+    <main>
+      <div class="item">
+        <label for="registerEmail">Email:</label>
+        <input id="registerEmail" type="email" formControlName="email">
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          <small *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</small>
+          <small *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</small>
+        </div>
+      </div>
+
+      <div class="item">
+        <label for="registerPassword">Password:</label>
+        <input id="registerPassword" type="password" formControlName="password">
+      </div>
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
+        <small *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </small>
+      </div>
+
+      <div class="item">
+        <label for="registerConfirmPassword">Confirm password:</label>
+        <input id="registerConfirmPassword" type="password" formControlName="confirmPassword">
+      </div>
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
+        <small *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </small>
+        <small *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">
+          Passwords do not match.
+        </small>
+      </div>
+    </main>
+    <footer>
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      <button class="google" (click)="onLoginWithGoogle()">Sign up with Google</button>
+    </footer>
+  </form>
+
+  
+</section>
