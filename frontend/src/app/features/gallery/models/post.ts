@@ -1,10 +1,11 @@
 export interface Post {
-    id: number;
+    id?: string;
     title: string;
-    date: string;
-    description: string;
+    description?: string;
+    date?: Date;
+    authorId?: string;
 
-    imageUrl: string;
+    thumbnailUrl?: string;
 }
 
 export function getMockPosts(): Post[] {
@@ -13,11 +14,11 @@ export function getMockPosts(): Post[] {
     for (let id = 0; id < 20; id++) {
         posts.push(
             {
-                id: id,
+                id: id.toString(),
                 title: "title" + id,
                 description: "desc" + id,
-                date: "18-08-2024",
-                imageUrl: "/assets/images/sample.png"
+                date: new Date(),
+                thumbnailUrl: "/assets/images/sample.png"
             }
         );
     }
