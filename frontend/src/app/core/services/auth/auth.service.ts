@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, Persistence, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,6 @@ export class AuthService {
 
   constructor() {
     this.setPersistence({type: 'LOCAL'});
-    
   }
 
   setPersistence(persistenceMode: Persistence): void {
@@ -57,6 +56,12 @@ export class AuthService {
 
   getAuthState(): Observable<any> {
     return authState(this.auth);
+  }
+
+  getUserUid(): Observable<string> {
+    return (authState(this.auth) as Observable<any>).pipe(
+      map(e => e ? e.uid : "")
+    );
   }
 
   signOut() {
