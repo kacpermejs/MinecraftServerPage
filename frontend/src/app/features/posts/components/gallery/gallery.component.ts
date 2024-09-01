@@ -18,7 +18,7 @@ export class GalleryComponent implements OnInit {
   uid$: Observable<string>;
 
   constructor(private postService: PostService, private authService: AuthService) {
-    this.posts$ = this.postService.getPosts();
+    this.posts$ = this.postService.getPostsOrderedByDate();
     this.uid$ = this.authService.getUserUid();
   }
 
@@ -31,8 +31,9 @@ export class GalleryComponent implements OnInit {
       {
         title: "Test",
         description: 'lorem ipsum 1111',
-        thumbnailUrl: '/assets/images/sample.png'
-      }
+        thumbnailUrl: '/assets/images/sample.png',
+        published: false
+      } as Post
     ).subscribe(
       console.log
     );

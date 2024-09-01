@@ -11,12 +11,16 @@
     <a routerLink="/rules"   routerLinkActive="active" >Rules</a>
 
     <div class="align-right">
-      <button routerLink="/login" [ngClass]="{ 'hidden': (isLoggedIn$ | async)}">
-        Sign in
-      </button>
-      <button (click)="onLogout()" [ngClass]="{ 'hidden': !(isLoggedIn$ | async)}">
-        Sign out
-      </button>
+      @if(isLoggedIn$ | async) {
+        <button routerLink="/login">
+          Sign in
+        </button>
+      } 
+      @else {
+        <button (click)="onLogout()">
+          Sign out
+        </button>
+      }
     </div>
   </nav>
 
@@ -28,3 +32,5 @@
 <div class="main-content">
   <router-outlet/>
 </div>
+
+<footer class="main"></footer>

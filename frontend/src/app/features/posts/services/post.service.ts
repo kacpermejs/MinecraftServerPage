@@ -1,7 +1,30 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, from, map, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  from,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { getMockPosts, Post } from '../models/post';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  docData,
+  Firestore,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+  where,
+} from '@angular/fire/firestore';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Injectable({
@@ -11,40 +34,86 @@ export class PostService {
   authService = inject(AuthService);
   firestore = inject(Firestore);
   postsCollection = collection(this.firestore, 'posts');
+  orderedPostsQuery = query(
+    this.postsCollection,
+    where('published', '==', true),
+    orderBy('date', 'desc')
+  );
 
   useMock = false;
 
   posts$: Observable<Post[]>;
 
   constructor() {
-
     if (this.useMock) {
       this.posts$ = from([getMockPosts()]).pipe(
         tap((posts) => console.log(posts))
       );
     } else {
-      this.posts$ = (
-        collectionData(this.postsCollection, { idField: 'id' }) as Observable<
-          any[]
-        >
-      ).pipe(
-        tap((posts) => console.log(posts)),
-        map((anyPosts) => anyPosts as Post[])
+      this.posts$ = combineLatest([
+        collectionData(this.orderedPostsQuery, { idField: 'id' }) as Observable<
+          Post[]
+        >,
+        this.getUsersPosts(),
+      ]).pipe(
+        map(([publishedPosts, userPosts]) => {
+          const mergedPosts = [...publishedPosts, ...userPosts];
+          const uniquePosts = Array.from(
+            new Map(mergedPosts.map((post) => [post.id, post])).values()
+          );
+
+          const sortedPosts = uniquePosts.sort((a, b) => {
+            // Handle different types for date comparison
+            const dateA =
+              a.date instanceof Date
+                ? a.date.getTime()
+                : (a.date as Timestamp).toDate().getTime();
+            const dateB =
+              b.date instanceof Date
+                ? b.date.getTime()
+                : (b.date as Timestamp).toDate().getTime();
+            return dateB - dateA; // Sort in descending order (latest posts first)
+          });
+
+          return sortedPosts;
+        }),
+        tap((posts) => console.log(posts))
       );
     }
+  }
+
+  getUsersPosts(): Observable<Post[]> {
+    return this.authService.getUserUid().pipe(
+      switchMap((uid) => {
+        if (uid > '') {
+          const usersPostQuery = query(
+            this.postsCollection,
+            where('authorId', '==', uid),
+            orderBy('date', 'desc')
+          );
+
+          return collectionData(usersPostQuery, {
+            idField: 'id',
+          }) as Observable<Post[]>;
+        } else {
+          console.log('User not logged in. Skipping owned posts.');
+          return of([]);
+        }
+      })
+    );
   }
 
   /**
    * Accesses cached observable of Posts
    * @returns Observable holding array of Posts without contents
    */
-  getPosts(): Observable<Post[]> {
+  getPostsOrderedByDate(): Observable<Post[]> {
     return this.posts$;
   }
-  
+
   /**
    * Gets whole Post with its /contents subcollection
-   * @param postId 
+   * @param postId
    * @returns Observable of single Post with contents filled
    */
   getPost(postId: string): Observable<Post> {
@@ -53,26 +122,26 @@ export class PostService {
 
     return docData<Post>(postDocRef).pipe(
       mergeMap((p: Post) => {
-        const colRef = collection(this.firestore, `posts/${postId}/contents` );
+        const colRef = collection(this.firestore, `posts/${postId}/contents`);
         return collectionData(colRef).pipe(
-          map(c => {
-            console.log("content:")
-            console.log(c)
+          map((c) => {
+            console.log('content:');
+            console.log(c);
             return {
               ...p,
-              contents: c
-            }
+              contents: c,
+            };
           }),
-          catchError(err => {
+          catchError((err) => {
             console.error('Error fetching contents:', err);
             return of({
               ...p,
-              contents: []
+              contents: [],
             });
           })
         );
       }),
-      catchError(err => {
+      catchError((err) => {
         console.error('Error fetching post:', err);
         return of(null);
       })
@@ -88,7 +157,8 @@ export class PostService {
             addDoc(this.postsCollection, {
               ...newPost,
               authorId: uid,
-              date: new Date(),
+              published: false,
+              date: serverTimestamp(),
             } as Post)
           ).pipe(
             switchMap((docRef) => {

@@ -1,12 +1,15 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface Post {
     id?: string;
+    date?: Date | Timestamp;
+
     title: string;
+    published: boolean;
+
     description?: string;
-    date?: Date;
     authorId?: string;
-
     contents?: PostContents[]
-
     thumbnailUrl?: string;
 }
 
@@ -44,6 +47,7 @@ export function getMockPosts(): Post[] {
             {
                 id: id.toString(),
                 title: "title" + id,
+                published: false,
                 description: "desc" + id,
                 date: new Date(),
                 thumbnailUrl: "/assets/images/sample.png",

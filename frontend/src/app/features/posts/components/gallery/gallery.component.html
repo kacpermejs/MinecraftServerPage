@@ -1,7 +1,9 @@
 <section class="container">
     <div class="header">
         <h1>See our creations:</h1>
-        <button (click)="addNewPost()">New post</button>
+        <div class="buttons">
+            <button (click)="addNewPost()">New post</button>
+        </div>
     </div>
     <div 
         class="card"
@@ -19,7 +21,7 @@
             <div class="desc">
                 <p>{{post?.description}}</p>
                 <div class="actions" *ngIf="(uid$ | async) === post.authorId">
-                    <button (click)="deletePost(post.id)">Delete</button>
+                    <button routerLink="{{'/post/' + post.id + '/edit'}}">Edit</button>
                 </div>
             </div>
         </div>
