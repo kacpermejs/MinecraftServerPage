@@ -1,3 +1,41 @@
-<button (click)="toggleEditMode()">Edit</button>
-<div *ngIf="isEditing">Edit mode</div>
-<p>post-viewer works!</p>
+<section>
+  @if(isEditing) {
+    <div>
+      <div>Edit mode</div>
+      <button>Save</button>
+      <button (click)="toggleEditMode()">Cancel</button>
+    </div>
+  }
+  @else {
+    <button (click)="toggleEditMode()">Edit</button>
+  }
+</section>
+
+<article *ngIf="post$ | async as post">
+  <header>
+    <h1>{{post.title}}</h1>
+    <h2>{{post.description}}</h2>
+    <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
+  </header>
+  <main>
+    <div *ngFor="let content of post.contents; let i = index">
+      @if(content.type === 'paragraph') {
+        <section *ngIf="castAsPostText(content) as paragraph">
+          <h2 *ngIf="paragraph.header">{{paragraph.header}}</h2>
+          <p *ngIf="castAsPostText(content) as paragraph">
+            {{paragraph.text}}
+          </p>
+        </section>
+      }
+
+      @else if (content.type === 'image') {
+        <section *ngIf="castAsPostImage(content) as image">
+          <figure>
+            <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
+            <figcaption for="'image-' + i">{{image.label}}</figcaption>
+          </figure>
+        </section>
+      }
+    </div>
+  </main>
+</article>

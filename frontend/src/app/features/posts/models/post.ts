@@ -9,21 +9,22 @@ export interface Post {
 
     description?: string;
     authorId?: string;
-    contents?: PostContents[]
+    contents?: PostContent[]
     thumbnailUrl?: string;
 }
 
-export interface PostContents {
+export interface PostContent {
     type: string;
 }
 
-export class PostText implements PostContents {
-    type = 'text';
+export class PostParagraph implements PostContent {
+    type = 'paragraph';
 
-    value?: string;
+    header?: string;
+    text?: string;
 }
 
-export class PostImage implements PostContents {
+export class PostImage implements PostContent {
     type = 'image';
 
     url?: string;
@@ -33,11 +34,11 @@ export class PostImage implements PostContents {
 export function getMockPosts(): Post[] {
     let posts: Post[] = [];
 
-    const contentText: PostContents = {
-        value: "bla bla bla dfjdsg"
-    } as PostText;
+    const contentText: PostContent = {
+        text: "bla bla bla dfjdsg"
+    } as PostParagraph;
 
-    const contentImage: PostContents = {
+    const contentImage: PostContent = {
         url: '/assets/images/sample.png',
         label: 'sample label'
     } as PostImage;

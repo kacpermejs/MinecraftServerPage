@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../services/post.service';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Post, PostContents } from '../../models/post';
+import { catchError, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { Post, PostContent, PostImage, PostParagraph } from '../../models/post';
 
 @Component({
   selector: 'app-post-viewer',
@@ -30,25 +30,44 @@ export class PostViewerComponent implements OnInit {
     );
 
   }
+
+  addContentElement() {
+
+  }
+
+  castAsPostText(content: PostContent) {
+    return content as PostParagraph;
+  }
+
+  castAsPostImage(content: PostContent) {
+    return content as PostImage;
+  }
   
   ngOnInit(): void {
     this.post$.subscribe(post => {
       console.log("Post:");
       console.log(post);
-      
+    });
+
+    this.route.url.subscribe(urlSegments => {
+      const mode = urlSegments[urlSegments.length - 1].path; // Get the last segment to determine 'edit' or 'view'
+      this.isEditing = (mode === 'edit');
     });
   }
 
   // Method to switch between view and edit modes
   toggleEditMode(): void {
-    // if (this.id) {
-    //   if (this.isEditing) {
-    //     // Navigate to 'view' mode
-    //     this.router.navigate(['/post', this.id, 'view']);
-    //   } else {
-    //     // Navigate to 'edit' mode
-    //     this.router.navigate(['/post', this.id, 'edit']);
-    //   }
-    // }
+
+    this.postId$.pipe(take(1)).subscribe( id => {
+      if (id) {
+        if (this.isEditing) {
+          // Navigate to 'view' mode
+          this.router.navigate(['/post', id, 'view']);
+        } else {
+          // Navigate to 'edit' mode
+          this.router.navigate(['/post', id, 'edit']);
+        }
+      }
+    })
   }
 }
