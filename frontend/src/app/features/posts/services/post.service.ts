@@ -64,14 +64,8 @@ export class PostService {
 
           const sortedPosts = uniquePosts.sort((a, b) => {
             // Handle different types for date comparison
-            const dateA =
-              a.date instanceof Date
-                ? a.date.getTime()
-                : (a.date as Timestamp).toDate().getTime();
-            const dateB =
-              b.date instanceof Date
-                ? b.date.getTime()
-                : (b.date as Timestamp).toDate().getTime();
+            const dateA = this.getPostDate(a);
+            const dateB = this.getPostDate(b);
             return dateB - dateA; // Sort in descending order (latest posts first)
           });
 
@@ -79,6 +73,17 @@ export class PostService {
         }),
         tap((posts) => console.log(posts))
       );
+    }
+  }
+
+  private getPostDate(post: Post): number {
+    if (post.date instanceof Date) {
+      return post.date.getTime();
+    } else if (post.date && typeof post.date.toDate === 'function') {
+      return post.date.toDate().getTime();
+    } else {
+      // Date is unresolved (e.g., serverTimestamp placeholder)
+      return Date.now();
     }
   }
 
@@ -153,13 +158,19 @@ export class PostService {
       switchMap((user) => {
         if (user) {
           const uid = user.uid;
+
+          const post = {
+            ...newPost,
+            authorId: uid,
+            published: false,
+            date: serverTimestamp(),
+          } as Post;
+
+          console.log("New post added:");
+          console.log(post);
+          
           return from(
-            addDoc(this.postsCollection, {
-              ...newPost,
-              authorId: uid,
-              published: false,
-              date: serverTimestamp(),
-            } as Post)
+            addDoc(this.postsCollection, post)
           ).pipe(
             switchMap((docRef) => {
               return from(Promise.resolve(docRef.id));

@@ -11,7 +11,7 @@
     <a routerLink="/rules"   routerLinkActive="active" >Rules</a>
 
     <div class="align-right">
-      @if(isLoggedIn$ | async) {
+      @if(!(isLoggedIn$ | async)) {
         <button routerLink="/login">
           Sign in
         </button>
