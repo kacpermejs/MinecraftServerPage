@@ -13,18 +13,24 @@ export interface Post {
     thumbnailUrl?: string;
 }
 
-export interface PostContent {
-    type: string;
+export abstract class PostContent {
+    abstract type: string;
+    order: number = -1;
 }
 
-export class PostParagraph implements PostContent {
-    type = 'paragraph';
+export class PostParagraphHeader extends PostContent {
+    type = 'paragraph.header'
 
-    header?: string;
     text?: string;
 }
 
-export class PostImage implements PostContent {
+export class PostParagraph extends PostContent {
+    type = 'paragraph.text';
+
+    text?: string;
+}
+
+export class PostImage extends PostContent {
     type = 'image';
 
     url?: string;

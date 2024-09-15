@@ -2,39 +2,125 @@
   @if(isEditing) {
     <div>
       <div>Edit mode</div>
-      <button>Save</button>
-      <button (click)="toggleEditMode()">Cancel</button>
+      <div class="actions">
+        <button>Save</button>
+        <button (click)="toggleEditMode()">Cancel</button>
+      </div>
     </div>
   }
   @else {
-    <button (click)="toggleEditMode()">Edit</button>
+    <div class="actions">
+      <button (click)="toggleEditMode()">Edit</button>
+    </div>
   }
 </section>
 
-<article *ngIf="post$ | async as post">
+<article *ngIf="(isEditing ? editedPost$ : post$) | async as post">
   <header>
-    <h1>{{post.title}}</h1>
-    <h2>{{post.description}}</h2>
-    <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
+    <!-- Editor -->
+    @if (isEditing) {
+      <h1 appEditable [editedClass]="'edited-header'">{{post.title}}</h1>
+      <h2 appEditable [editedClass]="'edited-header'">{{post.description}}</h2>
+      <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
+    }
+    <!-- Regular -->
+    @else {
+      <h1>{{post.title}}</h1>
+      <h2>{{post.description}}</h2>
+      <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
+    }
   </header>
+  <hr>
   <main>
-    <div *ngFor="let content of post.contents; let i = index">
-      @if(content.type === 'paragraph') {
-        <section *ngIf="castAsPostText(content) as paragraph">
-          <h2 *ngIf="paragraph.header">{{paragraph.header}}</h2>
-          <p *ngIf="castAsPostText(content) as paragraph">
-            {{paragraph.text}}
-          </p>
-        </section>
+    <!-- Editor Actions for inserting at head -->
+    @if (isEditing && post.contents?.length == 0) {
+      <div class="content-actions" style="display: flex; justify-content: center">
+        <button class="options-button plus-button" (click)="toggleDropdown(-1, $event)">+</button>
+        <div class="dropdown-menu" *ngIf="isDropdownOpen(-1)">
+          <button (click)="addHeaderAfter(-1)">Add Header</button>
+          <button (click)="addParagraphAfter(-1)">Add Paragraph</button>
+          <button (click)="addImageAfter(-1)">Add Image</button>
+        </div>
+      </div>
+    }
+
+    <div *ngFor="let content of post.contents; let i = index" class="content-node">
+
+      <!-- Contents -->
+
+      @if(content.type === 'paragraph.header') {
+        <!-- Editor -->
+        @if(isEditing) {
+          <section *ngIf="castAsPostParagraphHeader(content) as header">
+            <h2 appEditable [editedClass]="'edited-header'">
+              {{header.text}}
+            </h2>
+          </section>
+        }
+        <!-- Regular -->
+        @else {
+          <section *ngIf="castAsPostParagraphHeader(content) as header">
+            <h2 *ngIf="header.text">{{header.text}}</h2>
+          </section>
+        }
+      }
+
+      @if(content.type === 'paragraph.text') {
+        <!-- Editor -->
+        @if(isEditing) {
+          <section *ngIf="castAsPostText(content) as paragraph">
+            <p appEditable [editedClass]="'edited-paragraph'" *ngIf="castAsPostText(content) as paragraph">
+              {{paragraph.text}}
+            </p>
+          </section>
+        }
+        <!-- Regular -->
+        @else {
+          <section *ngIf="castAsPostText(content) as paragraph">
+            <p *ngIf="castAsPostText(content) as paragraph">
+              {{paragraph.text}}
+            </p>
+          </section>
+        }
       }
 
       @else if (content.type === 'image') {
-        <section *ngIf="castAsPostImage(content) as image">
-          <figure>
-            <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
-            <figcaption for="'image-' + i">{{image.label}}</figcaption>
-          </figure>
-        </section>
+
+        @if(isEditing) {
+          <section *ngIf="castAsPostImage(content) as image">
+            <figure>
+              @if(image.url) {
+                <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
+              }
+              @else {
+                <img [id]="'image-' + i" src="/assets/images/placeholder.png" alt="Empty image field">
+              }
+              
+              <figcaption appEditable [editedClass]="'edited-label'" for="'image-' + i">{{image.label}}</figcaption>
+            </figure>
+          </section>
+        }
+        @else {
+          <section *ngIf="castAsPostImage(content) as image">
+            <figure>
+              <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
+              <figcaption for="'image-' + i">{{image.label}}</figcaption>
+            </figure>
+          </section>
+        }
+        
+      }
+
+      <!-- Editor Actions for inserting at the end -->
+      @if (isEditing) {
+        <div class="content-actions">
+          <button class="options-button" (click)="toggleDropdown(i, $event)">...</button>
+          <div class="dropdown-menu" *ngIf="isDropdownOpen(i)">
+            <button (click)="addHeaderAfter(i)">Add Header</button>
+            <button (click)="addParagraphAfter(i)">Add Paragraph</button>
+            <button (click)="addImageAfter(i)">Add Image</button>
+          </div>
+        </div>
       }
     </div>
   </main>

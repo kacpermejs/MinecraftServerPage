@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { Observable } from 'rxjs';
 import { Post } from '../../models/post';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth/auth.service';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-gallery',
@@ -17,7 +17,11 @@ export class GalleryComponent implements OnInit {
   posts$: Observable<Post[] | undefined>;
   uid$: Observable<string>;
 
-  constructor(private postService: PostService, private authService: AuthService) {
+  router = inject(Router);
+  postService = inject(PostService);
+  authService = inject(AuthService);
+
+  constructor() {
     this.posts$ = this.postService.getPostsOrderedByDate();
     this.uid$ = this.authService.getUserUid();
   }
@@ -29,13 +33,13 @@ export class GalleryComponent implements OnInit {
 
     this.postService.createNewPost(
       {
-        title: "Test",
-        description: 'lorem ipsum 1111',
-        thumbnailUrl: '/assets/images/sample.png',
+        title: 'Untitled',
         published: false
       } as Post
-    ).subscribe(
-      console.log
+    ).subscribe( id => {
+      console.log(id);
+      this.router.navigate(['post', id, 'edit'])
+    }
     );
   }
 
