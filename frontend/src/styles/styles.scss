@@ -30,7 +30,7 @@ body {
   margin: 0;
 }
 
-button {
+button.primary {
   font-size: 12px;
   font-family: "FFF Forward", monospace;
   cursor: pointer;
@@ -84,8 +84,6 @@ form {
   width: 340px;
   padding: 1em;
 
-  header {}
-
   main {
 
     .item {
@@ -123,4 +121,68 @@ a {
 
 .hidden {
   display: none;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Align below the button */
+  left: -160px;
+  z-index: 1000;
+  min-width: 160px; /* Optional: Set width for the dropdown */
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown.open .dropdown-menu {
+  display: block;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+button.icon-btn.plus-button {
+  transform: translate(0, -8px);
+  font-size: 32px;
+  font-family: monospace;
+  border-radius: 6px;
+  padding: 0px 10px 4px 10px;
+  border: 2px solid black;
+
+  &:hover {
+    background-color: #ffffff3b;
+  }
+}
+
+button.icon-btn.dots-btn {
+  font-family: monospace;
+  font-size: 18px;
+  padding-bottom: 16px;
+  letter-spacing: -4px;
+  transform: translate(-12px, -4px);
+}
+
+button.icon-btn {
+  cursor: pointer;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  width: auto;
+  height: auto;
+  color: #f5f5f5;
+  padding: 0;
 }

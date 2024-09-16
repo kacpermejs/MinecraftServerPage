@@ -2,7 +2,7 @@
     <div>
         <h1>See our creations:</h1>
         <div class="buttons">
-            <button (click)="addNewPost()">New post</button>
+            <button class="primary" (click)="addNewPost()">New post</button>
         </div>
     </div>
     <div 
@@ -21,7 +21,7 @@
             <div class="desc">
                 <p>{{post?.description}}</p>
                 <div class="actions" *ngIf="(uid$ | async) === post.authorId">
-                    <button routerLink="{{'/post/' + post.id + '/edit'}}">Edit</button>
+                    <button class="primary" routerLink="{{'/post/' + post.id + '/edit'}}">Edit</button>
                 </div>
             </div>
         </div>

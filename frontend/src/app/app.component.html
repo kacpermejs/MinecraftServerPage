@@ -12,19 +12,19 @@
 
     <div class="align-right">
       @if(!(isLoggedIn$ | async)) {
-        <button routerLink="/login">
+        <button class="primary" routerLink="/login">
           Sign in
         </button>
       } 
       @else {
-        <button (click)="onLogout()">
+        <button class="primary" (click)="onLogout()">
           Sign out
         </button>
       }
     </div>
   </nav>
 
-  <button class="hamburger" (click)="toggleMenu()">
+  <button class="primary hamburger" (click)="toggleMenu()">
     |||
   </button>
 </header>
