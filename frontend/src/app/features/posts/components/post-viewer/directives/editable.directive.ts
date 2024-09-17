@@ -18,6 +18,15 @@ export class EditableDirective {
     this.checkIfEmpty();
   }
 
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    const text = event.clipboardData?.getData('text/plain'); // Get plain text only
+
+    if (text) {
+      this.insertTextAtCaret(text);
+    }
+  }
+
   @HostListener('click') onClick() {
     if (!this.el.nativeElement.isContentEditable) {
       this.enableEdit();
@@ -27,6 +36,22 @@ export class EditableDirective {
   @HostListener('blur') onBlur() {
     if (this.el.nativeElement.isContentEditable) {
       this.disableEdit();
+    }
+  }
+
+  private insertTextAtCaret(text: string) {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.deleteContents(); // Remove selected content, if any
+      const textNode = document.createTextNode(text);
+      range.insertNode(textNode);
+
+      // Move the caret position after the inserted text
+      range.setStartAfter(textNode);
+      range.setEndAfter(textNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
   }
 

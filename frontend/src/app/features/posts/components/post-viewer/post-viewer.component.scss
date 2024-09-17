@@ -1,8 +1,42 @@
 @use 'colors' as theme;
 
+.add-node {
+  position: absolute;
+  min-height: 1em;
+  
+  width: 100%;
+
+  &.add-node-after {
+    bottom: -16px;
+  }
+
+  * {
+    display: none;
+  }
+
+  &.always-visible {
+    position: relative;
+    bottom: 16px;
+    padding-top: 16px;
+
+    * {
+      display: inline-block;
+    }
+  }
+
+  &:hover {
+    position: relative;
+    bottom: 16px;
+    padding-top: 16px;
+    
+    * {
+      display: inline-block;
+    }
+  }
+}
+
 .content-node {
-  display: flex;
-  justify-content: center;
+  position: relative;
 
   section {
     margin-left: 0;
@@ -10,28 +44,15 @@
   }
 }
 
-.content-actions {
-  display: flex;
-  align-items: flex-end;
-}
-
 section {
   flex-grow: 2;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: 0;
+  padding-right: 0;
 
   .actions {
     display: flex;
     gap: 8px;
   }
-}
-
-hr {
-  border: 1px solid black;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2em;
 }
 
 article {
@@ -41,6 +62,8 @@ article {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+
+    margin-bottom: 2em;
 
     h2 {
       font-family: sans-serif;
@@ -59,6 +82,7 @@ article {
   }
 
   main {
+    position: relative;
     font-family: sans-serif;
     font-size: 1.33333em;
     max-width: 800px;
@@ -76,12 +100,27 @@ article {
     }
 
     figure {
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       img {
         margin-bottom: 1em;
+        max-width: 100%;
+        display: block;
+      }
+
+      figcaption {
+        min-width: 50px;
+        text-align: center;
+        word-wrap: break-word;
+      }
+    }
+
+    @media (max-width: 800px) {
+      p, h2 {
+        padding-left: 1em;
+        padding-right: 1em;
       }
     }
   }

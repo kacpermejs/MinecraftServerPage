@@ -136,12 +136,11 @@ a {
   display: none;
   position: absolute;
   top: 100%; /* Align below the button */
-  left: -160px;
+  left: -80px;
   z-index: 1000;
   min-width: 160px; /* Optional: Set width for the dropdown */
   padding: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: rgba(37, 35, 37, 0.815);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -156,15 +155,42 @@ a {
 }
 
 button.icon-btn.plus-button {
-  transform: translate(0, -8px);
-  font-size: 32px;
-  font-family: monospace;
-  border-radius: 6px;
-  padding: 0px 10px 4px 10px;
-  border: 2px solid black;
+  box-sizing: content-box;
+  width: 16px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  border: 2px solid theme.$text-light-color;
+  border-radius: 50%;
 
+  /* Mittig */
+  top: 50%;
+  left: 50%;
+
+  &:after {
+    content: '';
+    position: absolute;
+    transform: translate(-50%, -50%);
+    height: 2px;
+    width: 66%;
+    background: theme.$text-light-color;
+  }
+  
+  &:before {
+    content: '';
+    position: absolute;
+    transform: translate(-50%, -50%);
+    height: 66%;
+    width: 2px;
+    background: theme.$text-light-color;
+  }
+  
   &:hover {
-    background-color: #ffffff3b;
+    background-color: #ffffff48;
+    transition: 0.2s;
+
+    &:before, &:after {
+      transition: 0.2s;
+    }
   }
 }
 

@@ -39,6 +39,8 @@ export class PostEditorService {
   }
 
   addHeaderAfter(index: number) {
+    console.log(index);
+    
     this.addEmptyElement(index, () => new PostParagraphHeader());
   }
 

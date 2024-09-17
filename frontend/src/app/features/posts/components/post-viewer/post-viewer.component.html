@@ -30,8 +30,19 @@
       <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
     }
   </header>
-  <hr>
+
   <main>
+
+    @if (isEditing) {
+      <div class="add-node center-text" [ngClass]="{ 'always-visible': post.contents!.length < 1}" style="position: relative;">
+        <div appDropdown class="dropdown">
+          
+          <button class="icon-btn plus-button dropdown-toggle" type="button"></button>
+          
+          <app-node-editor-dropdown [index]="-1"></app-node-editor-dropdown>
+        </div>
+      </div>
+      }
 
     <div *ngFor="let content of post.contents; let i = index" class="content-node">
 
@@ -100,25 +111,17 @@
         
       }
 
-      <!-- Editor Actions for inserting at the end -->
       @if (isEditing) {
-        <div appDropdown class="content-actions dropdown">
-          
-          <button class="icon-btn dots-btn dropdown-toggle" type="button">...</button>
-          
-          <app-node-editor-dropdown [index]="i"></app-node-editor-dropdown>
+        <div class="add-node add-node-after center-text" [ngClass]="{ 'always-visible': i === post.contents!.length - 1 }">
+          <div appDropdown class="dropdown">
+            
+            <button class="icon-btn plus-button dropdown-toggle" type="button"></button>
+            
+            <app-node-editor-dropdown [index]="i"></app-node-editor-dropdown>
+          </div>
         </div>
       }
-    </div>
-    <div class="center-text">
-      @if (isEditing) {
-        <div appDropdown class="dropdown">
-          
-          <button class="icon-btn plus-button dropdown-toggle" type="button">+</button>
-          
-          <app-node-editor-dropdown [index]="(post.contents?.length ?? 0) - 1"></app-node-editor-dropdown>
-        </div>
-      }
+
     </div>
   </main>
 </article>
