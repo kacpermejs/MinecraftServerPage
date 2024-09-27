@@ -51,7 +51,7 @@
       @if(content.type === 'paragraph.header') {
         <!-- Editor -->
         @if(isEditing) {
-          <section *ngIf="castAsPostParagraphHeader(content) as header">
+          <section *ngIf="content | asParagraphHeader as header">
             <h2 appEditable [editedClass]="'edited-header'">
               {{header.text}}
             </h2>
@@ -59,7 +59,7 @@
         }
         <!-- Regular -->
         @else {
-          <section *ngIf="castAsPostParagraphHeader(content) as header">
+          <section *ngIf="content | asParagraphHeader as header">
             <h2 *ngIf="header.text">{{header.text}}</h2>
           </section>
         }
@@ -68,16 +68,16 @@
       @if(content.type === 'paragraph.text') {
         <!-- Editor -->
         @if(isEditing) {
-          <section *ngIf="castAsPostText(content) as paragraph">
-            <p appEditable [editedClass]="'edited-paragraph'" *ngIf="castAsPostText(content) as paragraph">
+          <section *ngIf="content | asParagraph as paragraph">
+            <p appEditable [editedClass]="'edited-paragraph'">
               {{paragraph.text}}
             </p>
           </section>
         }
         <!-- Regular -->
         @else {
-          <section *ngIf="castAsPostText(content) as paragraph">
-            <p *ngIf="castAsPostText(content) as paragraph">
+          <section *ngIf="content | asParagraphHeader as paragraph">
+            <p>
               {{paragraph.text}}
             </p>
           </section>
@@ -87,7 +87,7 @@
       @else if (content.type === 'image') {
 
         @if(isEditing) {
-          <section *ngIf="castAsPostImage(content) as image">
+          <section *ngIf="content | asImage as image">
             <figure>
               @if(image.url) {
                 <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
@@ -101,7 +101,7 @@
           </section>
         }
         @else {
-          <section *ngIf="castAsPostImage(content) as image">
+          <section *ngIf="content | asImage as image">
             <figure>
               <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
               <figcaption for="'image-' + i">{{image.label}}</figcaption>
