@@ -67,7 +67,9 @@ export class EditableDirective {
 
     if (currentContent !== this.originalContent) {
       this.renderer.addClass(this.el.nativeElement, this.editedClass);
-      this.contentChanged.emit(currentContent);  // Emit the changed content
+
+      const newValue = this.el.nativeElement.textContent.trim();
+      this.contentChanged.emit(newValue); // Emit the changed content
     }
 
     this.checkIfEmpty();

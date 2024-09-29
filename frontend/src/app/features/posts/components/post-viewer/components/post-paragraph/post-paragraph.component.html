@@ -1,0 +1,16 @@
+<!-- Editor -->
+@if(isEditing) {
+    <section *ngIf="node | asParagraph as paragraph">
+      <p appEditable (contentChanged)="onModelChange({text: $event})">
+        {{paragraph.data?.text}}
+      </p>
+    </section>
+  }
+  <!-- Regular -->
+  @else {
+    <section *ngIf="node | asParagraph as paragraph">
+      <p>
+        {{paragraph.data?.text}}
+      </p>
+    </section>
+  }

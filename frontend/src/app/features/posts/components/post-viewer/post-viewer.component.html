@@ -3,7 +3,7 @@
     <div>
       <div>Edit mode</div>
       <div class="actions">
-        <button class="primary">Save</button>
+        <button class="primary" (click)="saveChanges()">Save</button>
         <button class="primary" (click)="toggleEditMode()">Cancel</button>
       </div>
     </div>
@@ -19,8 +19,8 @@
   <header>
     <!-- Editor -->
     @if (isEditing) {
-      <h1 appEditable [editedClass]="'edited-header'">{{post.title}}</h1>
-      <h2 appEditable [editedClass]="'edited-header'">{{post.description}}</h2>
+      <h1 appEditable (contentChanged)="updateHeader({title: $event})">{{post.title}}</h1>
+      <h2 appEditable (contentChanged)="updateHeader({description: $event})">{{post.description}}</h2>
       <img src="{{post.thumbnailUrl}}" alt="post thumbnail">
     }
     <!-- Regular -->
@@ -47,68 +47,16 @@
     <div *ngFor="let content of post.contents; let i = index" class="content-node">
 
       <!-- Contents -->
-
       @if(content.type === 'paragraph.header') {
-        <!-- Editor -->
-        @if(isEditing) {
-          <section *ngIf="content | asParagraphHeader as header">
-            <h2 appEditable [editedClass]="'edited-header'">
-              {{header.text}}
-            </h2>
-          </section>
-        }
-        <!-- Regular -->
-        @else {
-          <section *ngIf="content | asParagraphHeader as header">
-            <h2 *ngIf="header.text">{{header.text}}</h2>
-          </section>
-        }
+        <app-post-paragraph-header [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph-header>
       }
 
       @if(content.type === 'paragraph.text') {
-        <!-- Editor -->
-        @if(isEditing) {
-          <section *ngIf="content | asParagraph as paragraph">
-            <p appEditable [editedClass]="'edited-paragraph'">
-              {{paragraph.text}}
-            </p>
-          </section>
-        }
-        <!-- Regular -->
-        @else {
-          <section *ngIf="content | asParagraphHeader as paragraph">
-            <p>
-              {{paragraph.text}}
-            </p>
-          </section>
-        }
+        <app-post-paragraph [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph>
       }
 
       @else if (content.type === 'image') {
-
-        @if(isEditing) {
-          <section *ngIf="content | asImage as image">
-            <figure>
-              @if(image.url) {
-                <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
-              }
-              @else {
-                <img [id]="'image-' + i" src="/assets/images/placeholder.png" alt="Empty image field">
-              }
-              
-              <figcaption appEditable [editedClass]="'edited-label'" for="'image-' + i">{{image.label}}</figcaption>
-            </figure>
-          </section>
-        }
-        @else {
-          <section *ngIf="content | asImage as image">
-            <figure>
-              <img [id]="'image-' + i" src="{{image.url}}" alt="{{image.label}}">
-              <figcaption for="'image-' + i">{{image.label}}</figcaption>
-            </figure>
-          </section>
-        }
-        
+        <app-post-image [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-image>
       }
 
       @if (isEditing) {

@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Post, PostContent, PostImage, PostParagraph, PostParagraphHeader } from '../../../models/post';
+import { cloneDeep } from 'lodash';
+
+import { Post, PostContent, PostContentPlaceholder, PostImage, PostParagraph, PostParagraphHeader } from '../../../models/post';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostEditorService {
+  private toAddOrUpdate: PostContent[] = [];
+  private toDelete: number[] = [];
 
+  private originalPost?: Post;
   private editedPost$ = new BehaviorSubject<Post | null>(null);
 
   constructor() { }
@@ -16,39 +21,119 @@ export class PostEditorService {
   }
 
   setEditedPost(p: Post | null) {
-    this.editedPost$.next(p);
+    if (p) {
+      this.originalPost = cloneDeep(p);
+
+      this.editedPost$.next(p);
+    } else {
+      this.originalPost = undefined;
+      this.editedPost$.next(null);
+    }
   }
 
-  addEmptyElement(index: number, createContent: () => PostContent) {
-    const content = createContent();
-    var post = this.editedPost$.value;
-  
-    if (post == null)
-      return;
-    if (!post.contents)
-      post.contents = [];
+  addElement(index: number, createContent?: () => PostContent) {
+    let content: PostContent;
+    if (!createContent) {
+      content = new PostContentPlaceholder();
+    } else {
+      content = createContent();
+    }
 
-    index +=1;
+    var post = this.editedPost$.value;
+
+    if (post == null) return;
+    if (!post.contents) post.contents = [];
+
+    index += 1;
     content.order = index;
     post.contents.splice(index, 0, content);
 
     for (let id = 0; id < post.contents.length; id++) {
       post.contents[id].order = id;
     }
-
   }
 
   addHeaderAfter(index: number) {
     console.log(index);
     
-    this.addEmptyElement(index, () => new PostParagraphHeader());
+    this.addElement(index, () => new PostParagraphHeader());
   }
 
   addParagraphAfter(index: number) {
-    this.addEmptyElement(index, () => new PostParagraph());
+    this.addElement(index, () => new PostParagraph());
   }
 
   addImageAfter(index: number) {
-    this.addEmptyElement(index, () => new PostImage());
+    this.addElement(index, () => new PostImage());
+  }
+
+  updateContentValue(order: number, newValue: any) {
+    const currentPost = this.editedPost$.value;
+    if (currentPost) {
+      const contentToUpdate = currentPost.contents?.find(content => content.order === order);
+      if (contentToUpdate) {
+        console.log('content to update:');
+        console.log(contentToUpdate);
+        
+        contentToUpdate.data = {...contentToUpdate.data, ...newValue};
+        // Emit the updated post
+        this.editedPost$.next(currentPost);
+      }
+    }
+  }
+
+  updateHeaderValue(data: { title?: string; description?: string; }) {
+    const newValue = {...this.editedPost$.value, ...data} as Post;
+    this.editedPost$.next(newValue);
+  }
+
+  checkHeaderChanges() {
+    const edited = this.editedPost$.value;
+    const current = this.originalPost;
+
+    console.log(edited);
+  }
+
+  checkContentChanges() {
+    this.toAddOrUpdate = [];
+    this.toDelete = [];
+
+    const editedContents = this.editedPost$.value?.contents;
+    const currentContents = this.originalPost?.contents;
+
+    if (!editedContents || !currentContents)
+      return;
+    
+    const currentMap = new Map(currentContents.map(node => [node.id, node]));
+  
+    // Identify modified or new nodes
+    editedContents.forEach(editedNode => {
+      const currentNode = currentMap.get(editedNode.id);
+  
+      // If the node doesn't exist or is modified, we need to add/update it
+      if (!currentNode || JSON.stringify(currentNode) !== JSON.stringify(editedNode)) {
+        this.toAddOrUpdate.push(editedNode);
+      }
+  
+      // Remove the node from the map, so we can identify deleted ones later
+      currentMap.delete(editedNode.id);
+    });
+  
+    // Remaining nodes in currentMap are the ones to be deleted
+    currentMap.forEach((_, nodeId) => {
+      if (nodeId != undefined)
+      this.toDelete.push(nodeId);
+    });
+  }
+
+  saveChanges() {
+    this.checkHeaderChanges();
+    this.checkContentChanges();
+
+    console.log('To add: ');
+    console.log(this.toAddOrUpdate);
+    
+    console.log('To delete: ');
+    console.log(this.toDelete);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { PostEditorService } from '../services/post-editor.service';
+import { PostEditorService } from '../../services/post-editor.service';
 
 @Component({
   selector: 'app-node-editor-dropdown',

@@ -22,7 +22,6 @@ import {
   orderBy,
   query,
   serverTimestamp,
-  Timestamp,
   where,
 } from '@angular/fire/firestore';
 import { AuthService } from '../../../core/services/auth/auth.service';
@@ -128,7 +127,7 @@ export class PostService {
     return docData<Post>(postDocRef).pipe(
       mergeMap((p: Post) => {
         const colRef = collection(this.firestore, `posts/${postId}/contents`);
-        return collectionData(colRef).pipe(
+        return collectionData(colRef, {idField: "id"}).pipe(
           map((c) => {
             console.log('content:');
             console.log(c);

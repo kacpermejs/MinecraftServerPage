@@ -1,0 +1,10 @@
+h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 800px) {
+  h2 {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}

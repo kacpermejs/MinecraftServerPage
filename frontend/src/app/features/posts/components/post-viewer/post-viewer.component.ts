@@ -6,11 +6,14 @@ import { map, Observable, of, switchMap, take } from 'rxjs';
 import { Post } from '../../models/post';
 import { EditableDirective } from './directives/editable.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
-import { NodeEditorDropdownComponent } from "./node-editor-dropdown/node-editor-dropdown.component";
+import { NodeEditorDropdownComponent } from "./components/node-editor-dropdown/node-editor-dropdown.component";
 import { PostEditorService } from './services/post-editor.service';
 import { PostContentAsParagraphHeaderPipe } from './pipes/post-content-as-paragraph-header.pipe';
 import { PostContentAsParagraphPipe } from './pipes/post-content-as-paragraph.pipe';
 import { PostContentAsImagePipe } from './pipes/post-content-as-image.pipe';
+import { PostParagraphComponent } from './components/post-paragraph/post-paragraph.component';
+import { PostParagraphHeaderComponent } from './components/post-paragraph-header/post-paragraph-header.component';
+import { PostImageComponent } from './components/post-image/post-image.component';
 
 @Component({
   selector: 'app-post-viewer',
@@ -24,6 +27,9 @@ import { PostContentAsImagePipe } from './pipes/post-content-as-image.pipe';
     PostContentAsParagraphHeaderPipe,
     PostContentAsParagraphPipe,
     PostContentAsImagePipe,
+    PostParagraphComponent,
+    PostParagraphHeaderComponent,
+    PostImageComponent
   ],
   templateUrl: './post-viewer.component.html',
   styleUrl: './post-viewer.component.scss',
@@ -92,5 +98,17 @@ export class PostViewerComponent implements OnInit {
         }
       }
     });
+  }
+
+  updatePostContent(order: number, newValue: any) {
+    this.editor.updateContentValue(order, newValue);
+  }
+
+  updateHeader(data: { title?: string, description?: string }) {
+    this.editor.updateHeaderValue(data);
+  }
+
+  saveChanges() {
+    this.editor.saveChanges();    
   }
 }

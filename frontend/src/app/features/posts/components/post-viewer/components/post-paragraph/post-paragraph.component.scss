@@ -1,0 +1,12 @@
+p {
+  margin-top: 0;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  p {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
