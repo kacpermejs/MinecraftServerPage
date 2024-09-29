@@ -2,11 +2,13 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
+ENV NODE_ENV development
+
 COPY package*.json ./
 
 RUN npm install -g @angular/cli
 
-RUN npm install
+RUN npm install --include=dev
 
 COPY . .
 
