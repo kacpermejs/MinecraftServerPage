@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { BaseNodeComponent } from '../base-node.component';
 import { EditableDirective } from '../../directives/editable.directive';
-import { PostContentAsParagraphPipe } from "../../pipes/post-content-as-paragraph.pipe";
+import { PostParagraph } from '../../../../models/PostParagraph';
 
 @Component({
   selector: 'app-post-paragraph',
   standalone: true,
-  imports: [CommonModule, EditableDirective, PostContentAsParagraphPipe],
+  imports: [CommonModule, EditableDirective],
   templateUrl: './post-paragraph.component.html',
   styleUrl: './post-paragraph.component.scss'
 })
-export class PostParagraphComponent extends BaseNodeComponent{
+export class PostParagraphComponent extends BaseNodeComponent<PostParagraph> {
 }

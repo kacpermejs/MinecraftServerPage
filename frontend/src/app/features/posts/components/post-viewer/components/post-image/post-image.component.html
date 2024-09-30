@@ -1,22 +1,23 @@
 @if(isEditing) {
-    <section *ngIf="node | asImage as image">
-      <figure>
-        @if(image.data?.url) {
-          <img [id]="'image-' + node.id" src="{{image.data?.url}}" alt="{{image.data?.label}}">
-        }
-        @else {
-          <img [id]="'image-' + node.id" src="/assets/images/placeholder.png" alt="Empty image field">
-        }
-        
-        <figcaption appEditable for="'image-' + i" (contentChanged)="onModelChange({label: $event})">{{image.data?.label}}</figcaption>
-      </figure>
-    </section>
-  }
-  @else {
-    <section *ngIf="node | asImage as image">
-      <figure>
-        <img [id]="'image-' + node.id" src="{{image.data?.url}}" alt="{{image.data?.label}}">
-        <figcaption for="'image-' + i">{{image.data?.label}}</figcaption>
-      </figure>
-    </section>
-  }
+<section *ngIf="node as image">
+  <figure>
+    @if(image.data.url) {
+    <img [id]="'image-' + node.id" src="{{image.data.url}}" alt="{{image.data.label}}">
+    }
+    @else {
+    <img [id]="'image-' + node.id" src="/assets/images/placeholder.png" alt="Empty image field">
+    }
+
+    <figcaption appEditable for="'image-' + i" (contentChanged)="onModelChange({label: $event})">{{image.data.label}}
+    </figcaption>
+  </figure>
+</section>
+}
+@else {
+<section *ngIf="node as image">
+  <figure>
+    <img [id]="'image-' + node.id" src="{{image.data.url}}" alt="{{image.data.label}}">
+    <figcaption for="'image-' + i">{{image.data.label}}</figcaption>
+  </figure>
+</section>
+}

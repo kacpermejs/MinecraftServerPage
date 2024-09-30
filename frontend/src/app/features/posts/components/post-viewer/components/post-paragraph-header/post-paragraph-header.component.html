@@ -1,15 +1,14 @@
 <!-- Editor -->
 @if(isEditing) {
-    <section *ngIf="node | asParagraphHeader as header">
-    <h2 appEditable (contentChanged)="onModelChange({text: $event})">
-        {{header.data?.text}}
-    </h2>
-    </section>
+<section *ngIf="node as header">
+  <h2 appEditable (contentChanged)="onModelChange({text: $event})">
+    {{header.data.text}}
+  </h2>
+</section>
 }
 <!-- Regular -->
 @else {
-    <section *ngIf="node | asParagraphHeader as header">
-    <h2 *ngIf="header.data?.text">{{header.data?.text}}</h2>
-    </section>
+<section *ngIf="node as header">
+  <h2 *ngIf="header.data.text">{{header.data.text}}</h2>
+</section>
 }
-  

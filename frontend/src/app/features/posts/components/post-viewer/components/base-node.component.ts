@@ -1,15 +1,15 @@
 import { Input, Output, EventEmitter, OnChanges, SimpleChanges, Directive } from '@angular/core';
-import { PostContent } from '../../../models/post';
-
 import { cloneDeep } from 'lodash';
 
-@Directive()
-export abstract class BaseNodeComponent implements OnChanges {
-  @Input() node!: PostContent;
-  @Input() isEditing = false;
-  @Output() updateNode = new EventEmitter<PostContent>();  // Event to emit updates to the parent
+import { PostContent } from '../../../models/PostContent';
 
-  originalNode!: PostContent;  // To hold the original data for canceling changes
+@Directive()
+export abstract class BaseNodeComponent<T extends PostContent> implements OnChanges {
+  @Input() node!: T;
+  @Input() isEditing = false;
+  @Output() updateNode = new EventEmitter<T>();  // Event to emit updates to the parent
+
+  originalNode!: T;  // To hold the original data for canceling changes
 
   // Lifecycle hook to store the original node when inputs change
   ngOnChanges(changes: SimpleChanges) {

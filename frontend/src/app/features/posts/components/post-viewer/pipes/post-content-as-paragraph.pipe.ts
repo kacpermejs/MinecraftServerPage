@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { PostContent, PostParagraph } from '../../../models/post';
+
+import { PostContent } from '../../../models/PostContent';
+import { PostParagraph } from '../../../models/PostParagraph';
 
 @Pipe({
   name: 'asParagraph',

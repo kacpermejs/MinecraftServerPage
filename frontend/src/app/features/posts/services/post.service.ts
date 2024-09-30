@@ -10,7 +10,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { getMockPosts, Post } from '../models/post';
+import { Post } from '../models/post';
+import { getMockPosts } from '../models/getMockPosts';
 import {
   addDoc,
   collection,

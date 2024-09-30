@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { cloneDeep } from 'lodash';
 
-import { Post, PostContent, PostContentPlaceholder, PostImage, PostParagraph, PostParagraphHeader } from '../../../models/post';
+import { Post } from '../../../models/post';
+import { PostContent } from '../../../models/PostContent';
+import { PostContentPlaceholder } from '../../../models/PostContentPlaceholder';
+import { PostParagraphHeader } from '../../../models/PostParagraphHeader';
+import { PostParagraph } from '../../../models/PostParagraph';
+import { PostImage } from '../../../models/PostImage';
 
 @Injectable({
   providedIn: 'root'

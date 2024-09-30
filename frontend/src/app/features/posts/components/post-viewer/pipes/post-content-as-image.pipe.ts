@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { PostContent, PostImage, PostParagraph } from '../../../models/post';
+
+import { PostContent } from '../../../models/PostContent';
+import { PostImage } from '../../../models/PostImage';
 
 @Pipe({
   name: 'asImage',

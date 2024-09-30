@@ -48,15 +48,15 @@
 
       <!-- Contents -->
       @if(content.type === 'paragraph.header') {
-        <app-post-paragraph-header [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph-header>
+        <app-post-paragraph-header [isEditing]="isEditing" [node]="content | asParagraphHeader" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph-header>
       }
 
       @if(content.type === 'paragraph.text') {
-        <app-post-paragraph [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph>
+        <app-post-paragraph [isEditing]="isEditing" [node]="content | asParagraph" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-paragraph>
       }
 
       @else if (content.type === 'image') {
-        <app-post-image [isEditing]="isEditing" [node]="content" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-image>
+        <app-post-image [isEditing]="isEditing" [node]="content | asImage" (updateNode)="updatePostContent(content.order, $event.data)"></app-post-image>
       }
 
       @if (isEditing) {
