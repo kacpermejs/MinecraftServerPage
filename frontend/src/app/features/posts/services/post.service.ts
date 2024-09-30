@@ -129,11 +129,12 @@ export class PostService {
       mergeMap((p: Post) => {
         const colRef = collection(this.firestore, `posts/${postId}/contents`);
         return collectionData(colRef, {idField: "id"}).pipe(
-          map((c) => {
+          map((c) => {            
             console.log('content:');
             console.log(c);
             return {
               ...p,
+              id: postId,
               contents: c,
             };
           }),

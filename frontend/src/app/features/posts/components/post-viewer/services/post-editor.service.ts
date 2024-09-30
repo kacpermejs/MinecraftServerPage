@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { cloneDeep } from 'lodash';
 
 import { Post } from '../../../models/post';
@@ -8,16 +8,19 @@ import { PostContentPlaceholder } from '../../../models/PostContentPlaceholder';
 import { PostParagraphHeader } from '../../../models/PostParagraphHeader';
 import { PostParagraph } from '../../../models/PostParagraph';
 import { PostImage } from '../../../models/PostImage';
+import { PostUploadService } from './post-upload.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostEditorService {
   private toAddOrUpdate: PostContent[] = [];
-  private toDelete: number[] = [];
+  private toDelete: string[] = [];
 
   private originalPost?: Post;
   private editedPost$ = new BehaviorSubject<Post | null>(null);
+
+  uploader = inject(PostUploadService);
 
   constructor() { }
 
@@ -131,7 +134,7 @@ export class PostEditorService {
     });
   }
 
-  saveChanges() {
+  saveChanges(): Observable<void> {
     this.checkHeaderChanges();
     this.checkContentChanges();
 
@@ -140,5 +143,22 @@ export class PostEditorService {
     
     console.log('To delete: ');
     console.log(this.toDelete);
+
+    if (!this.originalPost?.id) {
+      throw new Error('Original post ID is missing. Cannot save changes.');
+    }
+  
+    if (!this.editedPost$.value) {
+      throw new Error('No edited post data available. Cannot save changes.');
+    }
+
+    return this.uploader.savePostWithContents(
+      this.originalPost?.id,
+      this.editedPost$.value,
+      this.toAddOrUpdate,
+      this.toDelete
+    ).pipe(
+      tap(() => console.log("Post saved"))
+    );
   }
 }

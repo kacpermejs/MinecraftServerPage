@@ -109,6 +109,6 @@ export class PostViewerComponent implements OnInit {
   }
 
   saveChanges() {
-    this.editor.saveChanges();    
+    this.editor.saveChanges().subscribe();
   }
 }
