@@ -73,11 +73,35 @@ article {
       margin-left: auto;
       margin-right: auto;
     }
-    img {
-      margin-top: 2em;
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
+
+    .thumbnail-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        margin-top: 2em;
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+      }
+  
+      button {
+        display: none;
+        position: absolute;
+      }
+    
+      &:hover {
+    
+        button {
+          display: block;
+        }
+      }
+    
+      .file-input {
+        display: none;
+      }
     }
   }
 
