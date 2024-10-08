@@ -21,7 +21,11 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "baseUrl": "src", // Optional but ensures paths are relative to 'src'
+    "paths": {
+      "@core/*": ["app/core/*"] // Alias for core folder
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

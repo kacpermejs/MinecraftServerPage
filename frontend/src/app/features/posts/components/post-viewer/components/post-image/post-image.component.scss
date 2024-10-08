@@ -14,21 +14,4 @@ figure {
     text-align: center;
     word-wrap: break-word;
   }
-
-  button {
-    display: none;
-    position: absolute;
-    top: 40%;
-  }
-
-  &:hover {
-
-    button {
-      display: block;
-    }
-  }
-
-  .file-input {
-    display: none;
-  }
 }

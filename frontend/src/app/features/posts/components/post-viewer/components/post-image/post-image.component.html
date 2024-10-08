@@ -1,26 +1,10 @@
 @if(isEditing) {
 <section *ngIf="node as image">
   <figure class="image-selection">
-    @if(image.data.url) {
-      <img [id]="'image-' + node.id" src="{{image.data.url}}" alt="{{image.data.label}}">
-      <button class="primary" (click)="triggerFileInput()">
-        Select new image file
-      </button>
-    }
-    @else if(imagePreview) {
-      <img [src]="imagePreview" alt="Image Preview" />
-      <button class="primary" (click)="triggerFileInput()">
-        Select new image file
-      </button>
-    }
-    @else {
-      <img [id]="'image-' + node.id" src="/assets/images/placeholder.png" alt="Empty image field">
-      <button class="primary" (click)="triggerFileInput()" style="display: block">
-        Select image file
-      </button>
-    }
-    <input #fileInput class="file-input" type="file" (change)="onFileSelected($event)"/>
-
+    <div style="position: relative;">
+      <img [src]="imagePreview || image.data.url || '/assets/images/placeholder.png'" alt="Image preview">
+      <app-image-upload (fileSelected)="onFileSelected($event)">Select an image</app-image-upload>
+    </div>
     <figcaption appEditable for="'image-' + i" (contentChanged)="onModelChange({label: $event})">{{image.data.label}}
     </figcaption>
   </figure>

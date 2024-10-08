@@ -14,7 +14,7 @@ import { PostContentAsImagePipe } from './pipes/post-content-as-image.pipe';
 import { PostParagraphComponent } from './components/post-paragraph/post-paragraph.component';
 import { PostParagraphHeaderComponent } from './components/post-paragraph-header/post-paragraph-header.component';
 import { PostImageComponent } from './components/post-image/post-image.component';
-import { ImageFileInput } from './utils/ImageFileInput';
+import { ImageUploadComponent } from '@core/components/image-upload/image-upload.component';
 
 @Component({
   selector: 'app-post-viewer',
@@ -30,12 +30,13 @@ import { ImageFileInput } from './utils/ImageFileInput';
     PostContentAsImagePipe,
     PostParagraphComponent,
     PostParagraphHeaderComponent,
-    PostImageComponent
+    PostImageComponent,
+    ImageUploadComponent
   ],
   templateUrl: './post-viewer.component.html',
   styleUrl: './post-viewer.component.scss',
 })
-export class PostViewerComponent implements OnInit, ImageFileInput {
+export class PostViewerComponent implements OnInit {
   postService = inject(PostService);
   editor = inject(PostEditorService);
 
@@ -45,10 +46,8 @@ export class PostViewerComponent implements OnInit, ImageFileInput {
   post$: Observable<Post | null> = of(null);
   editedPost$: Observable<Post | null> = this.editor.getEditedPost();
 
-  selectedFile: File | null = null;
-  downloadURL: string | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
-  @ViewChild('fileInput') fileInput!: ElementRef;
+  selectedFile?: File;
+  imagePreview?: string | ArrayBuffer;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.postId$ = this.route.paramMap.pipe(map((params) => params.get('id')!));
@@ -106,22 +105,9 @@ export class PostViewerComponent implements OnInit, ImageFileInput {
     });
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.imagePreview = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
-
-  triggerFileInput() {
-    this.fileInput.nativeElement.click();
+  onFileSelected(event: { file?: File, preview?: string | ArrayBuffer }) {
+    this.selectedFile = event.file;
+    this.imagePreview = event.preview;
   }
 
   updatePostContent(order: number, newValue: any) {

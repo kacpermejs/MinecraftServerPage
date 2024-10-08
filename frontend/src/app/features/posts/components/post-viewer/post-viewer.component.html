@@ -22,25 +22,8 @@
       <h1 appEditable (contentChanged)="updateHeader({title: $event})">{{post.title}}</h1>
       <h2 appEditable (contentChanged)="updateHeader({description: $event})">{{post.description}}</h2>
       <div class="thumbnail-container">
-        @if(post.thumbnailUrl) {
-          <img src="{{post.thumbnailUrl}}" alt="Post thumbnail">
-          <button class="primary" (click)="triggerFileInput()">
-            Select new image file
-          </button>
-        }
-        @else if(imagePreview) {
-          <img [src]="imagePreview" alt="Image Preview" />
-          <button class="primary" (click)="triggerFileInput()">
-            Select new image file
-          </button>
-        }
-        @else {
-          <img src="/assets/images/placeholder.png" alt="Empty image field">
-          <button class="primary" (click)="triggerFileInput()" style="display: block">
-            Select image file
-          </button>
-        }
-        <input #fileInput class="file-input" type="file" (change)="onFileSelected($event)"/>
+        <img [src]="imagePreview || post.thumbnailUrl || '/assets/images/placeholder.png'" alt="Image preview">
+        <app-image-upload (fileSelected)="onFileSelected($event)">Select an image</app-image-upload>
       </div>
     }
     <!-- Regular -->
