@@ -5,6 +5,7 @@ import { BaseNodeComponent } from '../base-node.component';
 import { EditableDirective } from '../../directives/editable.directive';
 import { PostImage } from '../../../../models/PostImage';
 import { ImageUploadComponent } from '@core/components/image-upload/image-upload.component';
+import { ImageFileRegisterService } from '../../services/image-file-register/image-file-register.service';
 
 @Component({
   selector: 'app-post-image',
@@ -18,8 +19,22 @@ export class PostImageComponent extends BaseNodeComponent<PostImage> {
   selectedFile?: File;
   imagePreview?: string | ArrayBuffer;
 
+  constructor(private imageFileRegister: ImageFileRegisterService) {
+    super();
+  }
+
   onFileSelected(event: { file?: File, preview?: string | ArrayBuffer }) {
     this.selectedFile = event.file;
     this.imagePreview = event.preview;
+
+    if(!event.file)
+      return;
+
+    const registerId = this.imageFileRegister.registerFile(event.file);
+
+    this.node.data.url = "local:" + registerId;
+
+    console.log(`Registered file: ${this.node.data.url}`);
+    
   }
 }

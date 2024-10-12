@@ -8,7 +8,7 @@ import { PostContentPlaceholder } from '../../../models/PostContentPlaceholder';
 import { PostParagraphHeader } from '../../../models/PostParagraphHeader';
 import { PostParagraph } from '../../../models/PostParagraph';
 import { PostImage } from '../../../models/PostImage';
-import { PostUploadService } from './post-upload.service';
+import { PostUploadService } from './post-upload/post-upload.service';
 
 @Injectable({
   providedIn: 'root'

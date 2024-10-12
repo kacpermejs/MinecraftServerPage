@@ -13,9 +13,6 @@ export abstract class BaseNodeComponent<T extends PostContent> implements OnChan
 
   // Lifecycle hook to store the original node when inputs change
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Node:');
-    console.log(this.node);
-
     if (changes['node'] && changes['node'].currentValue) {
       this.originalNode = cloneDeep(this.node)
     }
