@@ -1,5 +1,16 @@
 services:
+  frontend:
+    container_name: frontend-dev
+    environment:
+      - ENVIRONMENT=Dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - "/usr/src/app/node_modules"
+      - "./frontend/:/usr/src/app"
   backend:
+    container_name: backend-dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -7,3 +18,5 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+  nginx:
+    container_name: nginx-dev
