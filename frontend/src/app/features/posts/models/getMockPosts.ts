@@ -15,7 +15,7 @@ export function getMockPosts(): Post[] {
 
   const contentImage: PostContent = {
     data: {
-      url: '/assets/images/sample.png',
+      fileId: '/assets/images/sample.png', //won't work because of new url resolving from fileId
       label: 'sample label',
     },
   } as PostImage;

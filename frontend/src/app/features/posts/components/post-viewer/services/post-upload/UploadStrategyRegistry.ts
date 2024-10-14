@@ -1,9 +1,12 @@
-import { getStorage } from "@angular/fire/storage";
-import { ContentUploadStrategy, DefaultUploadStrategy, ImageUploadStrategy } from "./ContentUploadStrategy";
-import { Observable } from "rxjs";
-import { PostContent } from "app/features/posts/models/PostContent";
 import { inject, Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { getStorage } from "@angular/fire/storage";
 import { FirebaseApp } from "@angular/fire/app";
+
+import { PostContent } from "app/features/posts/models/PostContent";
+import { ContentUploadStrategy } from "./ContentUploadStrategy";
+import { DefaultUploadStrategy } from './DefaultUploadStrategy';
+import { ImageUploadStrategy } from './ImageUploadStrategy';
 import { ImageFileRegisterService } from "../image-file-register/image-file-register.service";
 
 @Injectable({

@@ -2,7 +2,7 @@
 <section *ngIf="node as image">
   <figure class="image-selection">
     <div style="position: relative;">
-      <img [src]="imagePreview || image.data.url || '/assets/images/placeholder.png'" alt="Image preview">
+      <img [src]="imagePreview || getImageUrl(image.data.fileId) || '/assets/images/placeholder.png'" alt="Image preview">
       <app-image-upload (fileSelected)="onFileSelected($event)">Select an image</app-image-upload>
     </div>
     <figcaption appEditable for="'image-' + i" (contentChanged)="onModelChange({label: $event})">{{image.data.label}}
@@ -13,7 +13,7 @@
 @else {
 <section *ngIf="node as image">
   <figure>
-    <img [id]="'image-' + node.id" src="{{image.data.url}}" alt="{{image.data.label}}">
+    <img [id]="'image-' + node.id" [src]="getImageUrl(image.data.fileId)" alt="{{image.data.label}}">
     <figcaption for="'image-' + i">{{image.data.label}}</figcaption>
   </figure>
 </section>

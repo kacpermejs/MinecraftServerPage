@@ -1,5 +1,3 @@
-using Microsoft.OpenApi.Models;
-
 namespace backend {
   public class Program {
     public static void Main(string[] args) {
@@ -10,13 +8,7 @@ namespace backend {
       builder.Services.AddControllers();
       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
       builder.Services.AddEndpointsApiExplorer();
-      builder.Services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-
-        // Set the correct URL for Swagger when using Nginx
-        c.AddServer(new OpenApiServer { Url = "http://localhost/api" }); // Adjust as needed
-      });
+      builder.Services.AddSwaggerGen();
 
       var app = builder.Build();
 

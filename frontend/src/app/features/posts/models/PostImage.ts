@@ -1,7 +1,7 @@
 import { PostContent } from './PostContent';
 
 interface ImageData {
-  url?: string;
+  fileId?: string;
   label?: string;
 }
 

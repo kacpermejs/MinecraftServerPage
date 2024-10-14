@@ -19,6 +19,8 @@ export class PostImageComponent extends BaseNodeComponent<PostImage> {
   selectedFile?: File;
   imagePreview?: string | ArrayBuffer;
 
+  private readonly bucketName = 'elmshire-3e15e.appspot.com'; 
+
   constructor(private imageFileRegister: ImageFileRegisterService) {
     super();
   }
@@ -32,9 +34,20 @@ export class PostImageComponent extends BaseNodeComponent<PostImage> {
 
     const registerId = this.imageFileRegister.registerFile(event.file);
 
-    this.node.data.url = "local:" + registerId;
+    this.node.data.fileId = "local:" + registerId;
 
-    console.log(`Registered file: ${this.node.data.url}`);
-    
+    console.log(`Registered file: ${this.node.data.fileId}`);
+  }
+
+  getImageUrl(imageFileId?: string) {
+    if (!imageFileId || !this.parentPostId || !this.node.id) {
+      return '';
+    }
+
+    // Construct the file path with postId, contentId, and imageIdentifier
+    const encodedFilePath = encodeURIComponent(`posts/${this.parentPostId}/contents/${this.node.id}/${imageFileId}`);
+
+    // Construct and return the full URL
+    return `https://firebasestorage.googleapis.com/v0/b/${this.bucketName}/o/${encodedFilePath}?alt=media`;
   }
 }

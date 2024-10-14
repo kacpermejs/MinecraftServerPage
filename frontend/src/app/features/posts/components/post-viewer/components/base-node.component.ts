@@ -7,6 +7,7 @@ import { PostContent } from '../../../models/PostContent';
 export abstract class BaseNodeComponent<T extends PostContent> implements OnChanges {
   @Input() node!: T;
   @Input() isEditing = false;
+  @Input() parentPostId!: string;
   @Output() updateNode = new EventEmitter<T>();  // Event to emit updates to the parent
 
   originalNode!: T;  // To hold the original data for canceling changes
